@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +20,12 @@ namespace LlibrarySystem
     /// </summary>
     public partial class Authorization : Window
     {
+        SqlConnection sqlConnection;
         public Authorization()
         {
             InitializeComponent();
+            string connectionString = Connection.connectionString;
+            sqlConnection = new SqlConnection(connectionString);
         }
 
         private void RadioButton_Click(object sender, RoutedEventArgs e)
@@ -103,9 +107,50 @@ namespace LlibrarySystem
             }
         }
 
-        private void Enter_Click(object sender, RoutedEventArgs e)
+        private async void Enter_Click(object sender, RoutedEventArgs e)
         {
+            if (RBLibrarian.IsChecked == true && RBAdmin.IsChecked == false)
+            {
 
+            }
+            else if (RBAdmin.IsChecked == true && RBLibrarian.IsChecked == false)
+            {
+                bool authorization = false;
+
+                await sqlConnection.OpenAsync();
+                SqlDataReader dataReader = null;
+                SqlCommand sqlCommandSELECT = new SqlCommand($"SELECT * From [Admins]", sqlConnection);
+
+                try
+                {
+                    dataReader = await sqlCommandSELECT.ExecuteReaderAsync();
+                    while (await dataReader.ReadAsync())
+                    {
+                        if (Login.Text.Equals((String)(Convert.ToString(dataReader["Login"])).Trim(' ')) && Password.Password.Equals((String)(Convert.ToString(dataReader["Password"])).Trim(' ')))
+                        {
+                            authorization = true;
+                            break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    dataReader.Close();
+                }
+
+                if (authorization)
+                {
+                    new AdminMainWindow().Show();
+                }
+                else
+                    MessageBox.Show("Введены неверные данные!", "Ошибка авторизации", MessageBoxButton.OK, MessageBoxImage.Error);
+                sqlConnection.Close();
+                this.Close();
+            }
         }
     }
 }
