@@ -78,6 +78,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="data\Abonement.cs" />
     <Compile Include="AdminMainWindow.xaml.cs">
       <DependentUpon>AdminMainWindow.xaml</DependentUpon>
     </Compile>
@@ -85,15 +86,23 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Author.cs" />
+    <Compile Include="data\Author.cs" />
     <Compile Include="Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
     </Compile>
+    <Page Include="LibrarianMainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Book.cs" />
-    <Compile Include="Connection.cs" />
-    <Compile Include="Librarian.cs" />
+    <Compile Include="data\Book.cs" />
+    <Compile Include="data\Connection.cs" />
+    <Compile Include="data\Librarian.cs" />
+    <Compile Include="LibrarianMainWindow.xaml.cs">
+      <DependentUpon>LibrarianMainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="data\Passport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

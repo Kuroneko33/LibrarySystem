@@ -111,7 +111,43 @@ namespace LlibrarySystem
         {
             if (RBLibrarian.IsChecked == true && RBAdmin.IsChecked == false)
             {
+                bool authorization = false;
+                int Librarian_Id = 0;
 
+                await sqlConnection.OpenAsync();
+                SqlDataReader dataReader = null;
+                SqlCommand sqlCommandSELECT = new SqlCommand($"SELECT * From [Librarians]", sqlConnection);
+
+                try
+                {
+                    dataReader = await sqlCommandSELECT.ExecuteReaderAsync();
+                    while (await dataReader.ReadAsync())
+                    {
+                        if (Name.Text.Equals((String)(Convert.ToString(dataReader["Name"])).Trim(' ')) && Surname.Text.Equals((String)(Convert.ToString(dataReader["Surname"])).Trim(' ')) && Patronymic.Text.Equals((String)(Convert.ToString(dataReader["Patronymic"])).Trim(' ')) && Password.Password.Equals((String)(Convert.ToString(dataReader["Password"])).Trim(' ')))
+                        {
+                            Librarian_Id = Convert.ToInt32(dataReader["Id"]);
+                            authorization = true;
+                            break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    dataReader.Close();
+                }
+
+                if (authorization)
+                {
+                    new LibrarianMainWindow(Librarian_Id).Show();
+                    this.Close();
+                }
+                else
+                    MessageBox.Show("Введены неверные данные!", "Ошибка авторизации", MessageBoxButton.OK, MessageBoxImage.Error);
+                sqlConnection.Close();
             }
             else if (RBAdmin.IsChecked == true && RBLibrarian.IsChecked == false)
             {
@@ -145,11 +181,11 @@ namespace LlibrarySystem
                 if (authorization)
                 {
                     new AdminMainWindow().Show();
+                    this.Close();
                 }
                 else
                     MessageBox.Show("Введены неверные данные!", "Ошибка авторизации", MessageBoxButton.OK, MessageBoxImage.Error);
                 sqlConnection.Close();
-                this.Close();
             }
         }
     }

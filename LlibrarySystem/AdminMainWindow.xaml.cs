@@ -29,9 +29,9 @@ namespace LlibrarySystem
         int searchLengthOld = 0;
         public AdminMainWindow()
         {
+            InitializeComponent();
             string connectionString = Connection.connectionString;
             sqlConnection = new SqlConnection(connectionString);
-            InitializeComponent();
             Librarians = new ObservableCollection<Librarian>();
             LibrariansList.ItemsSource = Librarians;
             LoadLibrarians();
@@ -78,6 +78,7 @@ namespace LlibrarySystem
         private void AddLibrarianButton_Click(object sender, RoutedEventArgs e)
         {
             EditLibrarianPanel.Visibility = Visibility.Visible;
+            indexToEditL = -1;
         }
 
         private void EditLibrarianButton_Click(object sender, RoutedEventArgs e)
@@ -94,7 +95,7 @@ namespace LlibrarySystem
         private async void DeleteLibrarianButton_Click(object sender, RoutedEventArgs e)
         {
             indexToEditL = LibrariansList.SelectedIndex;
-            if (MessageBox.Show($"Удалить библиотекаря '{Librarians[indexToEditL].Surname} + {Librarians[indexToEditL].Name} + {Librarians[indexToEditL].Patronymic}'?", "Удаление библиотекаря", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show($"Удалить библиотекаря '{Librarians[indexToEditL].Surname} {Librarians[indexToEditL].Name} {Librarians[indexToEditL].Patronymic}'?", "Удаление библиотекаря", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 await sqlConnection.OpenAsync();
 
@@ -120,17 +121,20 @@ namespace LlibrarySystem
         {
             await sqlConnection.OpenAsync();
 
-            try
+            if (indexToEditL != -1)
             {
-                SqlCommand sqlCommandDELETE = new SqlCommand($"DELETE FROM [Librarians] WHERE [Name]=@Name AND [Surname]=@Surname AND [Patronymic]=@Patronymic AND [Password]=@Password", sqlConnection);
-                sqlCommandDELETE.Parameters.AddWithValue("Name", Librarians[indexToEditL].Name);
-                sqlCommandDELETE.Parameters.AddWithValue("Surname", Librarians[indexToEditL].Surname);
-                sqlCommandDELETE.Parameters.AddWithValue("Patronymic", Librarians[indexToEditL].Patronymic);
-                sqlCommandDELETE.Parameters.AddWithValue("Password", Librarians[indexToEditL].Password);
-                await sqlCommandDELETE.ExecuteNonQueryAsync();
-            }
-            catch(Exception)
-            {
+                try
+                {
+                    SqlCommand sqlCommandDELETE = new SqlCommand($"DELETE FROM [Librarians] WHERE [Name]=@Name AND [Surname]=@Surname AND [Patronymic]=@Patronymic AND [Password]=@Password", sqlConnection);
+                    sqlCommandDELETE.Parameters.AddWithValue("Name", Librarians[indexToEditL].Name);
+                    sqlCommandDELETE.Parameters.AddWithValue("Surname", Librarians[indexToEditL].Surname);
+                    sqlCommandDELETE.Parameters.AddWithValue("Patronymic", Librarians[indexToEditL].Patronymic);
+                    sqlCommandDELETE.Parameters.AddWithValue("Password", Librarians[indexToEditL].Password);
+                    await sqlCommandDELETE.ExecuteNonQueryAsync();
+                }
+                catch(Exception)
+                {
+                }
             }
 
             SqlCommand sqlCommandINSERT = new SqlCommand("INSERT INTO [Librarians] (Name, Surname, Patronymic, Password) VALUES (@Name, @Surname, @Patronymic, @Password)", sqlConnection);
@@ -167,7 +171,7 @@ namespace LlibrarySystem
             Books.Clear();
             sqlConnection.Open();
             SqlDataReader dataReader = null;
-            SqlCommand sqlCommandSELECT = new SqlCommand($"SELECT * From [Books], [Authors] WHERE [Books].[Author_Id] = [Authors].[Id] ORDER BY [Name]", sqlConnection);
+            SqlCommand sqlCommandSELECT = new SqlCommand($"SELECT * From [Books], [Authors] WHERE [Books].[Author_Id] = [Authors].[Id] ORDER BY [Surname], [Name], [Patronymic], [BookName]", sqlConnection);
 
             try
             {
@@ -204,6 +208,7 @@ namespace LlibrarySystem
 
         private void AddBookButton_Click(object sender, RoutedEventArgs e)
         {
+            indexToEditB = -1;
             EditBookPanel.Visibility = Visibility.Visible;
         }
 
@@ -227,20 +232,22 @@ namespace LlibrarySystem
         {
             await sqlConnection.OpenAsync();
 
-            try
+            if (indexToEditB != -1)
             {
-                SqlCommand sqlCommandDELETE = new SqlCommand($"DELETE FROM [Books] WHERE [BookName]=@BookName AND [Publisher]=@Publisher AND [PublicationDate]=@PublicationDate AND [PageCount]=@PageCount AND [Location]=@Location", sqlConnection);
-                sqlCommandDELETE.Parameters.AddWithValue("BookName", Books[indexToEditB].BookName);
-                sqlCommandDELETE.Parameters.AddWithValue("Publisher", Books[indexToEditB].Publisher);
-                sqlCommandDELETE.Parameters.AddWithValue("PublicationDate", Books[indexToEditB].PublicationDate);
-                sqlCommandDELETE.Parameters.AddWithValue("PageCount", Books[indexToEditB].PageCount);
-                sqlCommandDELETE.Parameters.AddWithValue("Location", Books[indexToEditB].Location);
-                await sqlCommandDELETE.ExecuteNonQueryAsync();
+                try
+                {
+                    SqlCommand sqlCommandDELETE = new SqlCommand($"DELETE FROM [Books] WHERE [BookName]=@BookName AND [Publisher]=@Publisher AND [PublicationDate]=@PublicationDate AND [PageCount]=@PageCount AND [Location]=@Location", sqlConnection);
+                    sqlCommandDELETE.Parameters.AddWithValue("BookName", Books[indexToEditB].BookName);
+                    sqlCommandDELETE.Parameters.AddWithValue("Publisher", Books[indexToEditB].Publisher);
+                    sqlCommandDELETE.Parameters.AddWithValue("PublicationDate", Books[indexToEditB].PublicationDate);
+                    sqlCommandDELETE.Parameters.AddWithValue("PageCount", Books[indexToEditB].PageCount);
+                    sqlCommandDELETE.Parameters.AddWithValue("Location", Books[indexToEditB].Location);
+                    await sqlCommandDELETE.ExecuteNonQueryAsync();
+                }
+                catch (Exception)
+                {
+                }
             }
-            catch (Exception)
-            {
-            }
-
             int Author_Id = 0;
             try
             {
@@ -294,6 +301,11 @@ namespace LlibrarySystem
             Surname.Text = "";
             Patronymic.Text = "";
             Password.Text = "";
+            BookName.Text = "";
+            Publisher.Text = "";
+            PublicationDate.Text = "";
+            PageCount.Text = "";
+            Location.Text = "";
 
             sqlConnection.Close();
             LoadBooks();
@@ -328,6 +340,14 @@ namespace LlibrarySystem
         private void CancelBookButton_Click(object sender, RoutedEventArgs e)
         {
             EditBookPanel.Visibility = Visibility.Collapsed;
+            AuthorName.Text = "";
+            AuthorSurname.Text = "";
+            AuthorPatronymic.Text = "";
+            BookName.Text = "";
+            Publisher.Text = "";
+            PublicationDate.Text = "";
+            PageCount.Text = "";
+            Location.Text = "";
         }
 
         private async void DeleteBookButton_Click(object sender, RoutedEventArgs e)
@@ -557,14 +577,14 @@ namespace LlibrarySystem
             }
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            new Authorization().Show();
-        }
-
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            new Authorization().Show();
         }
     }
 }

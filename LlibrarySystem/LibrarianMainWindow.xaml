@@ -1,0 +1,186 @@
+﻿<Window x:Class="LlibrarySystem.LibrarianMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LlibrarySystem"
+        mc:Ignorable="d"
+        Title="LibrarianMainWindow" Height="770" Width="1280"
+        WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid>
+            <StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Абонементы" FontSize="35" HorizontalAlignment="Center"></TextBlock>
+                    <Grid Margin="10 5 0 5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="SearchAWatermark" Foreground="LightSteelBlue" Text="Поиск" FontSize="35"></TextBlock>
+                        <TextBox x:Name="SearchA" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="35"></TextBox>
+                    </Grid>
+                </StackPanel>
+                <StackPanel VerticalAlignment="Center">
+                    <ListBox x:Name="AbonementsList" PreviewMouseDown="AbonementsList_MouseDown" Margin="0 0 10 0" Height="400" HorizontalContentAlignment="Stretch">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
+                                    <WrapPanel Margin="3" Orientation="Horizontal">
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Surname}"/>
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Name}"/>
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Patronymic}"/>
+                                    </WrapPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel>
+                        <Button x:Name="AddAbonementButton" Foreground="Green" Click="AddAbonementButton_Click" Margin="10 5" Content="Добавить" FontSize="30"></Button>
+                        <Button x:Name="EditAbonementButton" Click="EditAbonementButton_Click" Margin="10 5" Content="Редактировать" FontSize="30"></Button>
+                        <Button x:Name="DeleteAbonementButton" Foreground="Red" Click="DeleteAbonementButton_Click" Margin="10 5" Content="Удалить" FontSize="30"></Button>
+                        <Button x:Name="ReportAbonementButton" Foreground="Navy" Click="ReportAbonementButton_Click" Margin="10 5" Content="Отчёт по абонементу" FontSize="30"></Button>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="2">
+            <StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Книги" FontSize="35" HorizontalAlignment="Center"></TextBlock>
+                    <Grid Margin="10 5 0 5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="SearchBWatermark" Foreground="LightSteelBlue" Text="Поиск" FontSize="35"></TextBlock>
+                        <TextBox x:Name="SearchB" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="35"></TextBox>
+                    </Grid>
+                </StackPanel>
+                <StackPanel VerticalAlignment="Center">
+                    <ListBox x:Name="BooksList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10 0 0 0" Height="400" HorizontalContentAlignment="Stretch">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
+                                    <StackPanel>
+                                        <WrapPanel Margin="3" Orientation="Horizontal">
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Author.Surname}"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Author.Name}"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Author.Patronymic}"/>
+                                        </WrapPanel>
+                                        <WrapPanel Margin="3" Orientation="Horizontal">
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=BookName}"/>
+                                        </WrapPanel>
+                                        <WrapPanel Margin="3" Orientation="Horizontal">
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Publisher}"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="|"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=PublicationDate}"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="|"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=PageCount}"/>
+                                            <TextBlock Margin="5" FontSize="15"  Text="|"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Location}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel>
+                        <Button x:Name="IssueBookButton" VerticalAlignment="Center" Click="IssueBookButton_Click" Grid.Column="0" Margin="10 5" Content="&lt;-Выдача&lt;-" FontSize="30"></Button>
+                        <Button x:Name="RefundBookButton"  VerticalAlignment="Center" Click="RefundBookButton_Click" Grid.Column="1" Margin="10 5" Content="-&gt;Возврат-&gt;" FontSize="30"></Button>
+                        <Button x:Name="ReportBookButton" Foreground="Navy" Click="ReportBookButton_Click" Margin="10 5" Content="Отчёт по книге" FontSize="30"></Button>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Border VerticalAlignment="Center" x:Name="EditAbonementPanel" Visibility="Hidden" Grid.Column="1"  Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
+            <!-- -->
+            <StackPanel Margin="5">
+                <Grid>
+                    <TextBlock x:Name="AbonementTextBlock" TextWrapping="Wrap" Margin="15" FontSize="30" Text="Абонемент"/>
+                </Grid>
+                <ListBox x:Name="AbonementBooksList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10 0 0 0" Height="250" HorizontalContentAlignment="Stretch">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
+                                <StackPanel>
+                                    <WrapPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Author.Surname}"/>
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Author.Name}"/>
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Author.Patronymic}"/>
+                                    </WrapPanel>
+                                    <WrapPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=BookName}"/>
+                                    </WrapPanel>
+                                    <WrapPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Publisher}"/>
+                                        <TextBlock Margin="5" FontSize="15" Text="|"/>
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=PublicationDate}"/>
+                                        <TextBlock Margin="5" FontSize="15" Text="|"/>
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=PageCount}"/>
+                                        <TextBlock Margin="5" FontSize="15"  Text="|"/>
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Location}"/>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </Border>
+        <Border VerticalAlignment="Center" x:Name="EditBookPanel" Visibility="Collapsed" Grid.Column="1"  Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
+            <!--<StackPanel Margin="5">
+                <Grid>
+                    <TextBlock x:Name="AuthorSurnameWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Фамилия автора"/>
+                    <TextBox x:Name="AuthorSurname" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="AuthorNameWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Имя автора"/>
+                    <TextBox x:Name="AuthorName" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="AuthorPatronymicWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Отчество автора"/>
+                    <TextBox x:Name="AuthorPatronymic" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="BookNameWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Название книги"/>
+                    <TextBox x:Name="BookName" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="PublisherWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Издательство"/>
+                    <TextBox x:Name="Publisher" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="PublicationDateWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Год издания"/>
+                    <TextBox x:Name="PublicationDate" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="PageCountWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Количество страниц"/>
+                    <TextBox x:Name="PageCount" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="LocationWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Месторасположение"/>
+                    <TextBox x:Name="Location" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid Margin="0 50 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="SaveBookButton" Click="SaveBookButton_Click" Grid.Column="0" Margin="5" Content="Сохранить" FontSize="25"></Button>
+                    <Button x:Name="CancelBookButton" Click="CancelBookButton_Click" Grid.Column="1" Margin="5" Content="Отмена" FontSize="25"></Button>
+                </Grid>
+            </StackPanel>-->
+        </Border>
+        <TextBlock x:Name="BookInfo" Visibility="Collapsed" Grid.Column="1" Margin="5" FontSize="30" VerticalAlignment="Center"/>
+        <Button x:Name="Exit" Click="Exit_Click" Margin="20 0 20 10" Grid.Column="1" VerticalAlignment="Bottom" Content="Выход" FontSize="40"/>
+    </Grid>
+</Window>
