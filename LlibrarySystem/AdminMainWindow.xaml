@@ -17,25 +17,78 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid>
-            <TextBlock Text="Библиотекари" FontSize="35" HorizontalAlignment="Center"></TextBlock>
-            <StackPanel VerticalAlignment="Center">
-                <ListBox x:Name="LibrariansList" Margin="0 0 10 0" Height="400" HorizontalContentAlignment="Stretch">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
-                                <WrapPanel Margin="3" Orientation="Horizontal">
-                                    <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Surname}"/>
-                                    <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Name}"/>
-                                    <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Patronymic}"/>
-                                </WrapPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+            <StackPanel>
+                <TextBlock Margin="0 0 0 58" Text="Библиотекари" FontSize="35" HorizontalAlignment="Center"></TextBlock>
+                <StackPanel VerticalAlignment="Center">
+                    <ListBox x:Name="LibrariansList" Margin="0 0 10 0" Height="400" HorizontalContentAlignment="Stretch">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
+                                    <WrapPanel Margin="3" Orientation="Horizontal">
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Surname}"/>
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Name}"/>
+                                        <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Patronymic}"/>
+                                    </WrapPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel>
+                        <Button x:Name="AddLibrarianButton" Foreground="Green" Click="AddLibrarianButton_Click" Margin="10 5" Content="Добавить" FontSize="30"></Button>
+                        <Button x:Name="EditLibrarianButton" Click="EditLibrarianButton_Click" Margin="10 5" Content="Редактировать" FontSize="30"></Button>
+                        <Button x:Name="DeleteLibrarianButton" Foreground="Red" Click="DeleteLibrarianButton_Click" Margin="10 5" Content="Удалить" FontSize="30"></Button>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="2">
+            <StackPanel>
+
                 <StackPanel>
-                    <Button x:Name="AddLibrarianButton" Foreground="Green" Click="AddLibrarianButton_Click" Margin="5" Content="Добавить" FontSize="30"></Button>
-                    <Button x:Name="EditLibrarianButton" Click="EditLibrarianButton_Click" Margin="5" Content="Редактировать" FontSize="30"></Button>
-                    <Button x:Name="DeleteLibrarianButton" Foreground="Red" Click="DeleteLibrarianButton_Click" Margin="5" Content="Удалить" FontSize="30"></Button>
+                    <TextBlock Text="Книги" FontSize="35" HorizontalAlignment="Center"></TextBlock>
+                    <Grid Margin="10 5 0 5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="SearchWatermark" Foreground="LightSteelBlue" Text="Поиск" FontSize="35"></TextBlock>
+                        <TextBox x:Name="Search" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="35"></TextBox>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel VerticalAlignment="Center">
+                    <ListBox x:Name="BooksList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10 0 0 0" Height="400" HorizontalContentAlignment="Stretch">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
+                                    <StackPanel>
+                                        <WrapPanel Margin="3" Orientation="Horizontal">
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Author.Surname}"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Author.Name}"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Author.Patronymic}"/>
+                                        </WrapPanel>
+                                        <WrapPanel Margin="3" Orientation="Horizontal">
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=BookName}"/>
+                                        </WrapPanel>
+                                        <WrapPanel Margin="3" Orientation="Horizontal">
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Publisher}"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="|"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=PublicationDate}"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="|"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=PageCount}"/>
+                                            <TextBlock Margin="5" FontSize="15"  Text="|"/>
+                                            <TextBlock Margin="5" FontSize="15" Text="{Binding Path=Location}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel>
+                        <Button x:Name="AddBookButton" Foreground="Green" Click="AddBookButton_Click" Margin="10 5" Content="Добавить" FontSize="30"></Button>
+                        <Button x:Name="EditBookButton" Click="EditBookButton_Click" Margin="10 5" Content="Редактировать" FontSize="30"></Button>
+                        <Button x:Name="DeleteBookButton" Foreground="Red" Click="DeleteBookButton_Click" Margin="10 5" Content="Удалить" FontSize="30"></Button>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Grid>
@@ -67,6 +120,51 @@
                 </Grid>
             </StackPanel>
         </Border>
+        <Border VerticalAlignment="Center" x:Name="EditBookPanel" Visibility="Collapsed" Grid.Column="1"  Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
+            <StackPanel Margin="5">
+                <Grid>
+                    <TextBlock x:Name="AuthorSurnameWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Фамилия автора"/>
+                    <TextBox x:Name="AuthorSurname" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="AuthorNameWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Имя автора"/>
+                    <TextBox x:Name="AuthorName" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="AuthorPatronymicWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Отчество автора"/>
+                    <TextBox x:Name="AuthorPatronymic" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="BookNameWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Название книги"/>
+                    <TextBox x:Name="BookName" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="PublisherWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Издательство"/>
+                    <TextBox x:Name="Publisher" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="PublicationDateWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Год издания"/>
+                    <TextBox x:Name="PublicationDate" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="PageCountWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Количество страниц"/>
+                    <TextBox x:Name="PageCount" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid>
+                    <TextBlock x:Name="LocationWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Месторасположение"/>
+                    <TextBox x:Name="Location" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                </Grid>
+                <Grid Margin="0 50 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="SaveBookButton" Click="SaveBookButton_Click" Grid.Column="0" Margin="5" Content="Сохранить" FontSize="25"></Button>
+                    <Button x:Name="CancelBookButton" Click="CancelBookButton_Click" Grid.Column="1" Margin="5" Content="Отмена" FontSize="25"></Button>
+                </Grid>
+            </StackPanel>
+        </Border>
+        <TextBlock x:Name="BookInfo" Visibility="Collapsed" Grid.Column="1" Margin="5" FontSize="30" VerticalAlignment="Center"/>
         <Button x:Name="Exit" Click="Exit_Click" Margin="20 0 20 10" Grid.Column="1" VerticalAlignment="Bottom" Content="Выход" FontSize="40"/>
     </Grid>
 </Window>
