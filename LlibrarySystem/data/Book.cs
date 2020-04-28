@@ -14,6 +14,7 @@ namespace LlibrarySystem
         public int PublicationDate { get; set; }
         public int PageCount { get; set; }
         public string Location { get; set; }
+        public int Id { get; set; }
         public static Book Copy(Book book)
         {
             return new Book 
@@ -23,7 +24,8 @@ namespace LlibrarySystem
                 Publisher = book.Publisher,
                 PublicationDate = book.PublicationDate,
                 PageCount = book.PageCount,
-                Location = book.Location
+                Location = book.Location,
+                Id = book.Id
             };
         }
     }

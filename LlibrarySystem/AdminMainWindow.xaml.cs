@@ -61,6 +61,7 @@ namespace LlibrarySystem
                             Surname = (String)(Convert.ToString(dataReader["Surname"])).Trim(' '), 
                             Patronymic = (String)(Convert.ToString(dataReader["Patronymic"])).Trim(' '), 
                             Password = (String)(Convert.ToString(dataReader["Password"])).Trim(' '),
+                            Id = Convert.ToInt32(dataReader["Id"])
                     });
                 }
             }
@@ -77,19 +78,27 @@ namespace LlibrarySystem
 
         private void AddLibrarianButton_Click(object sender, RoutedEventArgs e)
         {
+            EditBookPanel.Visibility = Visibility.Collapsed;
             EditLibrarianPanel.Visibility = Visibility.Visible;
             indexToEditL = -1;
+            Name.Text = "";
+            Surname.Text = "";
+            Patronymic.Text = "";
+            Password.Text = "";
         }
 
         private void EditLibrarianButton_Click(object sender, RoutedEventArgs e)
         {
-            EditBookPanel.Visibility = Visibility.Collapsed;
-            EditLibrarianPanel.Visibility = Visibility.Visible;
-            indexToEditL = LibrariansList.SelectedIndex;
-            Name.Text = Librarians[indexToEditL].Name;
-            Surname.Text = Librarians[indexToEditL].Surname;
-            Patronymic.Text = Librarians[indexToEditL].Patronymic;
-            Password.Text = Librarians[indexToEditL].Password;
+            if (LibrariansList.SelectedIndex >= 0)
+            {
+                EditBookPanel.Visibility = Visibility.Collapsed;
+                EditLibrarianPanel.Visibility = Visibility.Visible;
+                indexToEditL = LibrariansList.SelectedIndex;
+                Name.Text = Librarians[indexToEditL].Name;
+                Surname.Text = Librarians[indexToEditL].Surname;
+                Patronymic.Text = Librarians[indexToEditL].Patronymic;
+                Password.Text = Librarians[indexToEditL].Password;
+            }
         }
 
         private async void DeleteLibrarianButton_Click(object sender, RoutedEventArgs e)
@@ -101,11 +110,8 @@ namespace LlibrarySystem
 
                 try
                 {
-                    SqlCommand sqlCommandDELETE = new SqlCommand($"DELETE FROM [Librarians] WHERE [Name]=@Name AND [Surname]=@Surname AND [Patronymic]=@Patronymic AND [Password]=@Password", sqlConnection);
-                    sqlCommandDELETE.Parameters.AddWithValue("Name", Librarians[indexToEditL].Name);
-                    sqlCommandDELETE.Parameters.AddWithValue("Surname", Librarians[indexToEditL].Surname);
-                    sqlCommandDELETE.Parameters.AddWithValue("Patronymic", Librarians[indexToEditL].Patronymic);
-                    sqlCommandDELETE.Parameters.AddWithValue("Password", Librarians[indexToEditL].Password);
+                    SqlCommand sqlCommandDELETE = new SqlCommand($"DELETE FROM [Librarians] WHERE [Id]=@Id", sqlConnection);
+                    sqlCommandDELETE.Parameters.AddWithValue("Id", Librarians[indexToEditL].Id);
                     await sqlCommandDELETE.ExecuteNonQueryAsync();
                 }
                 catch (Exception)
@@ -125,24 +131,27 @@ namespace LlibrarySystem
             {
                 try
                 {
-                    SqlCommand sqlCommandDELETE = new SqlCommand($"DELETE FROM [Librarians] WHERE [Name]=@Name AND [Surname]=@Surname AND [Patronymic]=@Patronymic AND [Password]=@Password", sqlConnection);
-                    sqlCommandDELETE.Parameters.AddWithValue("Name", Librarians[indexToEditL].Name);
-                    sqlCommandDELETE.Parameters.AddWithValue("Surname", Librarians[indexToEditL].Surname);
-                    sqlCommandDELETE.Parameters.AddWithValue("Patronymic", Librarians[indexToEditL].Patronymic);
-                    sqlCommandDELETE.Parameters.AddWithValue("Password", Librarians[indexToEditL].Password);
-                    await sqlCommandDELETE.ExecuteNonQueryAsync();
+                    SqlCommand sqlCommandUPDATE = new SqlCommand($"UPDATE [Librarians] SET [Name]=@Name, [Surname]=@Surname, [Patronymic]=@Patronymic, [Password]=@Password WHERE [Id]=@Id", sqlConnection);
+                    sqlCommandUPDATE.Parameters.AddWithValue("Id", Librarians[indexToEditL].Id);
+                    sqlCommandUPDATE.Parameters.AddWithValue("Name", Name.Text);
+                    sqlCommandUPDATE.Parameters.AddWithValue("Surname", Surname.Text);
+                    sqlCommandUPDATE.Parameters.AddWithValue("Patronymic", Patronymic.Text);
+                    sqlCommandUPDATE.Parameters.AddWithValue("Password", Password.Text);
+                    await sqlCommandUPDATE.ExecuteNonQueryAsync();
                 }
                 catch(Exception)
                 {
                 }
             }
-
-            SqlCommand sqlCommandINSERT = new SqlCommand("INSERT INTO [Librarians] (Name, Surname, Patronymic, Password) VALUES (@Name, @Surname, @Patronymic, @Password)", sqlConnection);
-            sqlCommandINSERT.Parameters.AddWithValue("Name", Name.Text);
-            sqlCommandINSERT.Parameters.AddWithValue("Surname", Surname.Text);
-            sqlCommandINSERT.Parameters.AddWithValue("Patronymic", Patronymic.Text);
-            sqlCommandINSERT.Parameters.AddWithValue("Password", Password.Text);
-            await sqlCommandINSERT.ExecuteNonQueryAsync();
+            else
+            {
+                SqlCommand sqlCommandINSERT = new SqlCommand("INSERT INTO [Librarians] (Name, Surname, Patronymic, Password) VALUES (@Name, @Surname, @Patronymic, @Password)", sqlConnection);
+                sqlCommandINSERT.Parameters.AddWithValue("Name", Name.Text);
+                sqlCommandINSERT.Parameters.AddWithValue("Surname", Surname.Text);
+                sqlCommandINSERT.Parameters.AddWithValue("Patronymic", Patronymic.Text);
+                sqlCommandINSERT.Parameters.AddWithValue("Password", Password.Text);
+                await sqlCommandINSERT.ExecuteNonQueryAsync();
+            }
 
             Name.Text = "";
             Surname.Text = "";
@@ -192,6 +201,7 @@ namespace LlibrarySystem
                         PublicationDate = Convert.ToInt32(dataReader["PublicationDate"]),
                         PageCount = Convert.ToInt32(dataReader["PageCount"]),
                         Location = (String)(Convert.ToString(dataReader["Location"])).Trim(' '),
+                        Id = Convert.ToInt32(dataReader["Id"]),
                     });
                 }
             }
@@ -209,46 +219,45 @@ namespace LlibrarySystem
         private void AddBookButton_Click(object sender, RoutedEventArgs e)
         {
             indexToEditB = -1;
+            EditLibrarianPanel.Visibility = Visibility.Collapsed;
             EditBookPanel.Visibility = Visibility.Visible;
+            AuthorName.Text = "";
+            AuthorSurname.Text = "";
+            AuthorPatronymic.Text = "";
+            BookName.Text = "";
+            Publisher.Text = "";
+            PublicationDate.Text = "";
+            PageCount.Text = "";
+            Location.Text = "";
         }
 
         private void EditBookButton_Click(object sender, RoutedEventArgs e)
         {
-            EditLibrarianPanel.Visibility = Visibility.Collapsed;
-            EditBookPanel.Visibility = Visibility.Visible;
-            indexToEditL = BooksList.SelectedIndex;
-            AuthorSurname.Text = Books[indexToEditL].Author.Surname;
-            AuthorName.Text = Books[indexToEditL].Author.Name;
-            AuthorPatronymic.Text = Books[indexToEditL].Author.Patronymic;
-            BookName.Text = Books[indexToEditL].BookName;
-            Publisher.Text = Books[indexToEditL].Publisher;
-            PublicationDate.Text = Convert.ToString(Books[indexToEditL].PublicationDate);
-            PageCount.Text = Convert.ToString(Books[indexToEditL].PageCount);
-            Location.Text = Books[indexToEditL].Location;
-            indexToEditB = BooksList.SelectedIndex;
+            if (BooksList.SelectedIndex >= 0)
+            {
+                EditLibrarianPanel.Visibility = Visibility.Collapsed;
+                EditBookPanel.Visibility = Visibility.Visible;
+                indexToEditL = BooksList.SelectedIndex;
+                AuthorSurname.Text = Books[indexToEditL].Author.Surname;
+                AuthorName.Text = Books[indexToEditL].Author.Name;
+                AuthorPatronymic.Text = Books[indexToEditL].Author.Patronymic;
+                BookName.Text = Books[indexToEditL].BookName;
+                Publisher.Text = Books[indexToEditL].Publisher;
+                PublicationDate.Text = Convert.ToString(Books[indexToEditL].PublicationDate);
+                PageCount.Text = Convert.ToString(Books[indexToEditL].PageCount);
+                Location.Text = Books[indexToEditL].Location;
+                indexToEditB = BooksList.SelectedIndex;
+            }
         }
 
         private async void SaveBookButton_Click(object sender, RoutedEventArgs e)
         {
             await sqlConnection.OpenAsync();
-
-            if (indexToEditB != -1)
-            {
-                try
-                {
-                    SqlCommand sqlCommandDELETE = new SqlCommand($"DELETE FROM [Books] WHERE [BookName]=@BookName AND [Publisher]=@Publisher AND [PublicationDate]=@PublicationDate AND [PageCount]=@PageCount AND [Location]=@Location", sqlConnection);
-                    sqlCommandDELETE.Parameters.AddWithValue("BookName", Books[indexToEditB].BookName);
-                    sqlCommandDELETE.Parameters.AddWithValue("Publisher", Books[indexToEditB].Publisher);
-                    sqlCommandDELETE.Parameters.AddWithValue("PublicationDate", Books[indexToEditB].PublicationDate);
-                    sqlCommandDELETE.Parameters.AddWithValue("PageCount", Books[indexToEditB].PageCount);
-                    sqlCommandDELETE.Parameters.AddWithValue("Location", Books[indexToEditB].Location);
-                    await sqlCommandDELETE.ExecuteNonQueryAsync();
-                }
-                catch (Exception)
-                {
-                }
-            }
-            int Author_Id = 0;
+            int Author_Id = 0; 
+            int publicationDate = 0;
+            Int32.TryParse(PublicationDate.Text, out publicationDate);
+            int pageCount = 0;
+            Int32.TryParse(PageCount.Text, out pageCount);
             try
             {
                 SqlCommand sqlCommandSELECT = new SqlCommand($"SELECT [Id] FROM [Authors] WHERE [Name]=N'{Books[indexToEditB].Author.Name}' AND [Surname]=N'{Books[indexToEditB].Author.Surname}' AND [Patronymic]=N'{Books[indexToEditB].Author.Patronymic}'", sqlConnection);
@@ -282,20 +291,36 @@ namespace LlibrarySystem
                 {
                 }
             }
-
-
-            int publicationDate = 0;
-            Int32.TryParse(PublicationDate.Text, out publicationDate);
-            int pageCount = 0;
-            Int32.TryParse(PageCount.Text, out pageCount);
-            SqlCommand sqlCommandINSERT = new SqlCommand("INSERT INTO [Books] (Author_Id, BookName, Publisher, PublicationDate, PageCount, Location) VALUES (@Author_Id, @BookName, @Publisher, @PublicationDate, @PageCount, @Location)", sqlConnection);
-            sqlCommandINSERT.Parameters.AddWithValue("Author_Id", Author_Id);
-            sqlCommandINSERT.Parameters.AddWithValue("BookName", BookName.Text);
-            sqlCommandINSERT.Parameters.AddWithValue("Publisher", Publisher.Text);
-            sqlCommandINSERT.Parameters.AddWithValue("PublicationDate", publicationDate);
-            sqlCommandINSERT.Parameters.AddWithValue("PageCount", pageCount);
-            sqlCommandINSERT.Parameters.AddWithValue("Location", Location.Text);
-            await sqlCommandINSERT.ExecuteNonQueryAsync();
+            if (indexToEditB != -1)
+            {
+                
+                try
+                {
+                    SqlCommand sqlCommandUPDATE = new SqlCommand($"UPDATE [Books] SET [BookName]=@BookName, [Publisher]=@Publisher, [PublicationDate]=@PublicationDate, [PageCount]=@PageCount, [Location]=@Location WHERE [Id]=@Id", sqlConnection);
+                    sqlCommandUPDATE.Parameters.AddWithValue("Id", Books[indexToEditB].Id);
+                    sqlCommandUPDATE.Parameters.AddWithValue("Author_Id", Author_Id);
+                    sqlCommandUPDATE.Parameters.AddWithValue("BookName", BookName.Text);
+                    sqlCommandUPDATE.Parameters.AddWithValue("Publisher", Publisher.Text);
+                    sqlCommandUPDATE.Parameters.AddWithValue("PublicationDate", publicationDate);
+                    sqlCommandUPDATE.Parameters.AddWithValue("PageCount", pageCount);
+                    sqlCommandUPDATE.Parameters.AddWithValue("Location", Location.Text);
+                    await sqlCommandUPDATE.ExecuteNonQueryAsync();
+                }
+                catch (Exception)
+                {
+                }
+            }
+            else
+            {
+                SqlCommand sqlCommandINSERT = new SqlCommand("INSERT INTO [Books] (Author_Id, BookName, Publisher, PublicationDate, PageCount, Location) VALUES (@Author_Id, @BookName, @Publisher, @PublicationDate, @PageCount, @Location)", sqlConnection);
+                sqlCommandINSERT.Parameters.AddWithValue("Author_Id", Author_Id);
+                sqlCommandINSERT.Parameters.AddWithValue("BookName", BookName.Text);
+                sqlCommandINSERT.Parameters.AddWithValue("Publisher", Publisher.Text);
+                sqlCommandINSERT.Parameters.AddWithValue("PublicationDate", publicationDate);
+                sqlCommandINSERT.Parameters.AddWithValue("PageCount", pageCount);
+                sqlCommandINSERT.Parameters.AddWithValue("Location", Location.Text);
+                await sqlCommandINSERT.ExecuteNonQueryAsync();
+            }    
 
             AuthorName.Text = "";
             Surname.Text = "";
@@ -309,8 +334,18 @@ namespace LlibrarySystem
 
             sqlConnection.Close();
             LoadBooks();
+            SearchUpdate();
+            EditBookPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void SearchUpdate()
+        {
             if (Search.Text.Length > 0)
             {
+                if (Search.Text.Length < searchLengthOld)
+                {
+                    LoadBooks();
+                }
                 searchLengthOld = Search.Text.Length;
                 SearchWatermark.Visibility = Visibility.Hidden;
                 string search = Search.Text;
@@ -334,7 +369,11 @@ namespace LlibrarySystem
                     }
                 }
             }
-            EditBookPanel.Visibility = Visibility.Collapsed;
+            else
+            {
+                LoadBooks();
+                SearchWatermark.Visibility = Visibility.Visible;
+            }
         }
 
         private void CancelBookButton_Click(object sender, RoutedEventArgs e)
@@ -358,12 +397,8 @@ namespace LlibrarySystem
 
                 try
                 {
-                    SqlCommand sqlCommandDELETE = new SqlCommand($"DELETE FROM [Books] WHERE [BookName]=@BookName AND [Publisher]=@Publisher AND [PublicationDate]=@PublicationDate AND [PageCount]=@PageCount AND [Location]=@Location", sqlConnection);
-                    sqlCommandDELETE.Parameters.AddWithValue("BookName", Books[BooksList.SelectedIndex].BookName);
-                    sqlCommandDELETE.Parameters.AddWithValue("Publisher", Books[BooksList.SelectedIndex].Publisher);
-                    sqlCommandDELETE.Parameters.AddWithValue("PublicationDate", Books[BooksList.SelectedIndex].PublicationDate);
-                    sqlCommandDELETE.Parameters.AddWithValue("PageCount", Books[BooksList.SelectedIndex].PageCount);
-                    sqlCommandDELETE.Parameters.AddWithValue("Location", Books[BooksList.SelectedIndex].Location);
+                    SqlCommand sqlCommandDELETE = new SqlCommand($"DELETE FROM [Books] WHERE [Id]=@Id", sqlConnection);
+                    sqlCommandDELETE.Parameters.AddWithValue("Id", Books[BooksList.SelectedIndex].Id);
                     await sqlCommandDELETE.ExecuteNonQueryAsync();
                 }
                 catch (Exception)
@@ -540,40 +575,7 @@ namespace LlibrarySystem
             }
             else if (Search.Equals(textBox))
             {
-                if (Search.Text.Length > 0)
-                {
-                    if (Search.Text.Length < searchLengthOld)
-                    {
-                        LoadBooks();
-                    }
-                    searchLengthOld = Search.Text.Length;
-                    SearchWatermark.Visibility = Visibility.Hidden;
-                    string search = Search.Text;
-                    for (int i = 0; i < Books.Count; i++)
-                    {
-                        string str = "";
-                        str += Books[i].Author.Name;
-                        str += Books[i].Author.Surname;
-                        str += Books[i].Author.Patronymic;
-                        str += Books[i].BookName;
-                        str += Books[i].Location;
-                        str += Books[i].PageCount;
-                        str += Books[i].PublicationDate;
-                        str += Books[i].Publisher;
-                        str += str.ToLower() + str.ToUpper();
-                        int ind = str.IndexOf(search);
-                        if (ind == -1)
-                        {
-                            Books.RemoveAt(i);
-                            i--;
-                        }
-                    }
-                }
-                else
-                {
-                    LoadBooks();
-                    SearchWatermark.Visibility = Visibility.Visible;
-                }
+                SearchUpdate();
             }
         }
 

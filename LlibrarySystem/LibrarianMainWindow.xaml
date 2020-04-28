@@ -101,13 +101,12 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
-        <Border VerticalAlignment="Center" x:Name="EditAbonementPanel" Visibility="Hidden" Grid.Column="1"  Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
-            <!-- -->
+        <Border VerticalAlignment="Center" x:Name="ViewAbonementPanel" Visibility="Collapsed" Grid.Column="1"  Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
             <StackPanel Margin="5">
                 <Grid>
                     <TextBlock x:Name="AbonementTextBlock" TextWrapping="Wrap" Margin="15" FontSize="30" Text="Абонемент"/>
                 </Grid>
-                <ListBox x:Name="AbonementBooksList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10 0 0 0" Height="250" HorizontalContentAlignment="Stretch">
+                <ListBox x:Name="AbonementBooksList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10" Height="250" HorizontalContentAlignment="Stretch">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
@@ -136,51 +135,57 @@
                 </ListBox>
             </StackPanel>
         </Border>
-        <Border VerticalAlignment="Center" x:Name="EditBookPanel" Visibility="Collapsed" Grid.Column="1"  Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
-            <!--<StackPanel Margin="5">
+        <Border VerticalAlignment="Center" x:Name="EditAbonementPanel" Visibility="Collapsed" Grid.Column="1"  Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
+            <StackPanel Margin="5">
                 <Grid>
-                    <TextBlock x:Name="AuthorSurnameWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Фамилия автора"/>
-                    <TextBox x:Name="AuthorSurname" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                    <TextBlock x:Name="AbonementSurnameWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Фамилия"/>
+                    <TextBox x:Name="AbonementSurname" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
                 </Grid>
                 <Grid>
-                    <TextBlock x:Name="AuthorNameWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Имя автора"/>
-                    <TextBox x:Name="AuthorName" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                    <TextBlock x:Name="AbonementNameWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Имя"/>
+                    <TextBox x:Name="AbonementName" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
                 </Grid>
                 <Grid>
-                    <TextBlock x:Name="AuthorPatronymicWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Отчество автора"/>
-                    <TextBox x:Name="AuthorPatronymic" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                    <TextBlock x:Name="AbonementPatronymicWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Отчество"/>
+                    <TextBox x:Name="AbonementPatronymic" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
                 </Grid>
                 <Grid>
-                    <TextBlock x:Name="BookNameWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Название книги"/>
-                    <TextBox x:Name="BookName" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                    <TextBlock x:Name="PassportCountryWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Страна"/>
+                    <TextBox x:Name="PassportCountry" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
                 </Grid>
                 <Grid>
-                    <TextBlock x:Name="PublisherWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Издательство"/>
-                    <TextBox x:Name="Publisher" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                    <TextBlock x:Name="AddressWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Адрес"/>
+                    <TextBox x:Name="Address" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
                 </Grid>
                 <Grid>
-                    <TextBlock x:Name="PublicationDateWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Год издания"/>
-                    <TextBox x:Name="PublicationDate" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
-                </Grid>
-                <Grid>
-                    <TextBlock x:Name="PageCountWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Количество страниц"/>
-                    <TextBox x:Name="PageCount" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
-                </Grid>
-                <Grid>
-                    <TextBlock x:Name="LocationWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Месторасположение"/>
-                    <TextBox x:Name="Location" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
+                    <TextBlock x:Name="ContactPhoneNumberWatermark" Margin="5" Foreground="LightSteelBlue" FontSize="30" Text="Контактный телефон"/>
+                    <TextBox x:Name="ContactPhoneNumber" Margin="5" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="30"/>
                 </Grid>
                 <Grid Margin="0 50 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="SaveBookButton" Click="SaveBookButton_Click" Grid.Column="0" Margin="5" Content="Сохранить" FontSize="25"></Button>
-                    <Button x:Name="CancelBookButton" Click="CancelBookButton_Click" Grid.Column="1" Margin="5" Content="Отмена" FontSize="25"></Button>
+                    <Button x:Name="SaveAbonementButton" Click="SaveAbonementButton_Click" Grid.Column="0" Margin="5" Content="Сохранить" FontSize="25"></Button>
+                    <Button x:Name="CancelAbonementButton" Click="CancelAbonementButton_Click" Grid.Column="1" Margin="5" Content="Отмена" FontSize="25"></Button>
                 </Grid>
-            </StackPanel>-->
+            </StackPanel>
         </Border>
-        <TextBlock x:Name="BookInfo" Visibility="Collapsed" Grid.Column="1" Margin="5" FontSize="30" VerticalAlignment="Center"/>
+        <Border VerticalAlignment="Center" x:Name="ReportPanel" Visibility="Collapsed" Grid.Column="1"  Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
+            <StackPanel Margin="5">
+                <Grid Margin="10 5 0 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="SearchRWatermark" Foreground="LightSteelBlue" Text="Поиск" FontSize="35"></TextBlock>
+                    <TextBox x:Name="SearchR" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="35"></TextBox>
+                </Grid>
+                <ListBox x:Name="ReportList" FontSize="15" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10" Height="250" HorizontalContentAlignment="Stretch">
+                </ListBox>
+                <Button x:Name="ReportOk" Click="CancelAbonementButton_Click" Content="Ок" FontSize="30" Margin="10"/>
+            </StackPanel>
+        </Border>
         <Button x:Name="Exit" Click="Exit_Click" Margin="20 0 20 10" Grid.Column="1" VerticalAlignment="Bottom" Content="Выход" FontSize="40"/>
     </Grid>
 </Window>

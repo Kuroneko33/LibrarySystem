@@ -9,11 +9,13 @@ namespace LlibrarySystem
     class Passport
     {
         public string Country { get; set; }
+        public int Id { get; set; }
         public static Passport Copy(Passport passport)
         {
             return new Passport
             {
-                Country = passport.Country
+                Country = passport.Country,
+                Id = passport.Id
             };
         }
     }

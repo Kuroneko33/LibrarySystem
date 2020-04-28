@@ -136,6 +136,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>LibraryDB.mdf</DependentUpon>
     </Content>
+    <Content Include="SQLQueryDeleteOperations.sql" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
