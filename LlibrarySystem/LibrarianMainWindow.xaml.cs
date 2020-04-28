@@ -330,6 +330,40 @@ namespace LlibrarySystem
             {
                 dataReader.Close();
             }
+
+            dataReader = null;
+            sqlCommandSELECT = new SqlCommand($"SELECT * From [Operations], [Librarians] WHERE [Operations].[Abonement_Id]=N'{Abonements[ReportAbonementIndex].Id}' AND [Operations].[Librarian_Id]=[Librarians].[Id]", sqlConnection);
+            try
+            {
+                dataReader = sqlCommandSELECT.ExecuteReader();
+                int i = 0;
+                while (dataReader.Read())
+                {
+                    string Name = (String)(Convert.ToString(dataReader["Name"])).Trim(' ');
+                    string Patronymic = (String)(Convert.ToString(dataReader["Patronymic"])).Trim(' ');
+                    string Surname = (String)(Convert.ToString(dataReader["Surname"])).Trim(' ');
+                    if (Name == "")
+                        Name = "Не указано";
+                    if (Surname == "")
+                        Surname = "Не указана";
+                    if (Patronymic == "")
+                        Patronymic = "Не указано";
+                    string str = "Выдано библиотекарем:\n";
+                    str += Surname + " ";
+                    str += Name + " ";
+                    str += Patronymic + "\n";
+                    ReportList.Items[i] = ReportList.Items[i] + str;
+                    i++;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                dataReader.Close();
+            }
             sqlConnection.Close();
         }
 
@@ -587,6 +621,40 @@ namespace LlibrarySystem
                     str += (String)(Convert.ToString(dataReader["Surname"])).Trim(' ') + "\n";
                     str += (String)(Convert.ToString(dataReader["Date"])).Trim(' ') + "\n";
                     ReportList.Items.Add(str);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                dataReader.Close();
+            }
+
+            dataReader = null;
+            sqlCommandSELECT = new SqlCommand($"SELECT * From [Operations], [Librarians] WHERE [Operations].[Book_Id]=N'{Books[ReportBooksIndex].Id}' AND [Operations].[Librarian_Id]=[Librarians].[Id]", sqlConnection);
+            try
+            {
+                dataReader = sqlCommandSELECT.ExecuteReader();
+                int i = 0;
+                while (dataReader.Read())
+                {
+                    string Name = (String)(Convert.ToString(dataReader["Name"])).Trim(' ');
+                    string Patronymic = (String)(Convert.ToString(dataReader["Patronymic"])).Trim(' ');
+                    string Surname = (String)(Convert.ToString(dataReader["Surname"])).Trim(' ');
+                    if (Name == "")
+                        Name = "Не указано";
+                    if (Surname == "")
+                        Surname = "Не указана";
+                    if (Patronymic == "")
+                        Patronymic = "Не указано";
+                    string str = "Выдано библиотекарем:\n";
+                    str += Surname + " ";
+                    str += Name + " ";
+                    str += Patronymic + "\n";
+                    ReportList.Items[i] = ReportList.Items[i] + str;
+                    i++;
                 }
             }
             catch (Exception ex)
