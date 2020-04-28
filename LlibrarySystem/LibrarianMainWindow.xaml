@@ -30,7 +30,7 @@
                     </Grid>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center">
-                    <ListBox x:Name="AbonementsList" PreviewMouseDoubleClick="AbonementsList_MouseDoubleClick" Margin="0 0 10 0" Height="400" HorizontalContentAlignment="Stretch">
+                    <ListBox x:Name="AbonementsList" PreviewMouseDoubleClick="AbonementsList_MouseDoubleClick" ScrollViewer.CanContentScroll="False" Margin="0 0 10 0" Height="400" HorizontalContentAlignment="Stretch">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
@@ -66,7 +66,7 @@
                     </Grid>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center">
-                    <ListBox x:Name="BooksList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10 0 0 0" Height="400" HorizontalContentAlignment="Stretch">
+                    <ListBox x:Name="BooksList" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10 0 0 0" Height="400" HorizontalContentAlignment="Stretch">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
@@ -181,7 +181,7 @@
                     <TextBlock x:Name="SearchRWatermark" Foreground="LightSteelBlue" Text="Поиск" FontSize="35"></TextBlock>
                     <TextBox x:Name="SearchR" TextChanged="EditField_TextChanged" Background="Transparent" FontSize="35"></TextBox>
                 </Grid>
-                <ListBox x:Name="ReportList" FontSize="15" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10" Height="250" HorizontalContentAlignment="Stretch">
+                <ListBox x:Name="ReportList" FontSize="15" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10" Height="350" HorizontalContentAlignment="Stretch">
                 </ListBox>
                 <Button x:Name="ReportOk" Click="CancelAbonementButton_Click" Content="Ок" FontSize="30" Margin="10"/>
             </StackPanel>

@@ -20,7 +20,7 @@
             <StackPanel>
                 <TextBlock Margin="0 0 0 58" Text="Библиотекари" FontSize="35" HorizontalAlignment="Center"></TextBlock>
                 <StackPanel VerticalAlignment="Center">
-                    <ListBox x:Name="LibrariansList" Margin="0 0 10 0" Height="400" HorizontalContentAlignment="Stretch">
+                    <ListBox x:Name="LibrariansList" ScrollViewer.CanContentScroll="False" Margin="0 0 10 0" Height="400" HorizontalContentAlignment="Stretch">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
@@ -57,7 +57,7 @@
                 </StackPanel>
 
                 <StackPanel VerticalAlignment="Center">
-                    <ListBox x:Name="BooksList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10 0 0 0" Height="400" HorizontalContentAlignment="Stretch">
+                    <ListBox x:Name="BooksList" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10 0 0 0" Height="400" HorizontalContentAlignment="Stretch">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4">
