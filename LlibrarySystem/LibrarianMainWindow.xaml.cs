@@ -246,7 +246,7 @@ namespace LlibrarySystem
 
         }
 
-        private void AbonementsList_MouseDown(object sender, MouseButtonEventArgs e)
+        private void AbonementsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (AbonementsList.SelectedIndex >= 0 && EditAbonementPanel.Visibility == Visibility.Collapsed && ReportPanel.Visibility == Visibility.Collapsed)
             {
