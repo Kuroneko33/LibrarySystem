@@ -107,21 +107,21 @@ namespace LlibrarySystem
             }
         }
 
-        private async void Enter_Click(object sender, RoutedEventArgs e)
+        private void Enter_Click(object sender, RoutedEventArgs e)
         {
             if (RBLibrarian.IsChecked == true && RBAdmin.IsChecked == false)
             {
                 bool authorization = false;
                 int Librarian_Id = 0;
 
-                await sqlConnection.OpenAsync();
+                sqlConnection.Open();
                 SqlDataReader dataReader = null;
                 SqlCommand sqlCommandSELECT = new SqlCommand($"SELECT * From [Librarians]", sqlConnection);
 
                 try
                 {
-                    dataReader = await sqlCommandSELECT.ExecuteReaderAsync();
-                    while (await dataReader.ReadAsync())
+                    dataReader = sqlCommandSELECT.ExecuteReader();
+                    while (dataReader.Read())
                     {
                         if (Name.Text.Equals((String)(Convert.ToString(dataReader["Name"])).Trim(' ')) && Surname.Text.Equals((String)(Convert.ToString(dataReader["Surname"])).Trim(' ')) && Patronymic.Text.Equals((String)(Convert.ToString(dataReader["Patronymic"])).Trim(' ')) && Password.Password.Equals((String)(Convert.ToString(dataReader["Password"])).Trim(' ')))
                         {
@@ -153,14 +153,14 @@ namespace LlibrarySystem
             {
                 bool authorization = false;
 
-                await sqlConnection.OpenAsync();
+                sqlConnection.Open();
                 SqlDataReader dataReader = null;
                 SqlCommand sqlCommandSELECT = new SqlCommand($"SELECT * From [Admins]", sqlConnection);
 
                 try
                 {
-                    dataReader = await sqlCommandSELECT.ExecuteReaderAsync();
-                    while (await dataReader.ReadAsync())
+                    dataReader = sqlCommandSELECT.ExecuteReader();
+                    while (dataReader.Read())
                     {
                         if (Login.Text.Equals((String)(Convert.ToString(dataReader["Login"])).Trim(' ')) && Password.Password.Equals((String)(Convert.ToString(dataReader["Password"])).Trim(' ')))
                         {

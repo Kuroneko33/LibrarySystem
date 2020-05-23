@@ -6,10 +6,19 @@ using System.Threading.Tasks;
 
 namespace LlibrarySystem
 {
-    class Connection
+    static class Connection
     {
         private static string fullpath = System.IO.Directory.GetCurrentDirectory();
-        private static string path = fullpath.Substring(0, fullpath.IndexOf("bin"));
-        public static string connectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={path}LibraryDB.mdf;Integrated Security=True";
+        private static int index = fullpath.IndexOf("rer");
+        private static string path = fullpath + "\\";
+        public static string connectionString { get; }
+        static Connection()
+        {
+            if (index!=-1)
+            {
+                path = fullpath.Substring(0, index);
+            }
+            connectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={path}LibraryDB.mdf;Integrated Security=True";
+        }
     }
 }
