@@ -9,7 +9,7 @@ namespace LlibrarySystem
     static class Connection
     {
         private static string fullpath = System.IO.Directory.GetCurrentDirectory();
-        private static int index = fullpath.IndexOf("rer");
+        private static int index = fullpath.IndexOf("bin");
         private static string path = fullpath + "\\";
         public static string connectionString { get; }
         static Connection()
